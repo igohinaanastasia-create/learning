@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div>
+    Акции {{ stock.name }} ({{ stock.ticker }})
+</div>
+
+<div style="color:red;">
+    {{ form.non_field_errors }}
+    {{ form.amount.errors }}
+    {{ form.price.errors }}
+    {{ form.action.errors }} {# <-- добавь это #}
+</div>
+<div>
+    <form method="POST" action="{% url 'stock:trade' stock.pk %}">
+        {% csrf_token %}
+        {{ form }}
+        <input type="hidden" name="action" value="buy">
+        <button type="submit">Купить</button>
+    </form>
+</div>
+<div>
+    <form method="POST" action="{% url 'stock:trade' stock.pk %}">
+        {% csrf_token %}
+        {{ form }}
+        <input type="hidden" name="action" value="sell">
+        <button type="submit">Продать</button>
+    </form>
+</div><div style="color:red;">
+    {{ form.non_field_errors }}
+</div>
+
+<div>
+    <a href="{% url 'stock:list' %}">Назад</a>
+</div>
+
+{% endblock %}
